@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Comparator.comparing;
 
@@ -33,6 +34,11 @@ public class Lambdas {
 
         inventory.sort((a1, a2) -> a2.getWeight() - a1.getWeight());
         System.out.println(inventory);
+
+
+        List<Integer> l = map(Arrays.asList("test", "zaaaaa"), (String s) -> s.length());
+        System.out.println(l);
+
     }
 
     public static List<Apple> filter(List<Apple> inventory, ApplePredicate predicate) {
@@ -43,6 +49,20 @@ public class Lambdas {
             }
         }
         return filter;
+    }
+
+
+   // The java.util.function.Function<T, R> interface defines an abstract method
+   // named apply that takes an object of generic type T as input and returns an object of
+   // generic type R
+
+
+    public static <T, R> List<R> map(List<T> list, Function<T, R> f) {
+        List<R> res = new ArrayList<>();
+        for(T t: list) {
+            res.add(f.apply(t));
+        }
+        return res;
     }
 
     interface ApplePredicate {

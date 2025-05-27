@@ -30,14 +30,40 @@ public class Lambdas {
         inventory.sort(comparing(Apple::getWeight));
         System.out.println(inventory);
 
-        inventory.set(1, new Apple(20, Color.RED));
+        inventory.set(1, new Apple(20, Color.GREEN));
 
         inventory.sort((a1, a2) -> a2.getWeight() - a1.getWeight());
         System.out.println(inventory);
 
+        /*
+        inventory.sort(comparing(Apple::getWeight)
+                .reversed()
+                .thenComparing()
+        );
+
+         */
+        Function<Integer, Integer> f = x -> x + 1;
+        Function<Integer, Integer> g = x -> x * 2;
+        Function<Integer, Integer> h = f.andThen(g);
+        int result = h.apply(1);
+        System.out.println(result); //4
+
+        Function<Integer, Integer> a = x -> x + 1;
+        Function<Integer, Integer> b = x -> x * 2;
+        Function<Integer, Integer> c = a.compose(b);
+        int result1 = c.apply(1);
+        System.out.println(result1); //3
+
+        Function<String, String> addHeader = Lambdas::addHeader;
+        Function<String, String> transformPipeline = addHeader.andThen(Lambdas::checkSpelling)
+                .andThen(Lambdas::addFooter);
+        String result2 = transformPipeline.apply("testtt labda");
+        System.out.println(result2);
 
         List<Integer> l = map(Arrays.asList("test", "zaaaaa"), (String s) -> s.length());
         System.out.println(l);
+
+
 
     }
 
@@ -65,7 +91,18 @@ public class Lambdas {
         return res;
     }
 
+
     interface ApplePredicate {
         boolean apply(Apple a);
+    }
+
+    public static String addFooter(String text) {
+        return text + " Kind regards";
+    }
+    public static String checkSpelling(String text) {
+        return text.replaceAll("labda", "lambda");
+    }
+    public static String addHeader(String text) {
+        return "From Raoul, Mario and Alan: " + text;
     }
 }
